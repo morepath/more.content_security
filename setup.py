@@ -6,7 +6,7 @@ name = 'more.content_security'
 description = (
     'Content Security Policy for Morepath'
 )
-version = '0.0.0'
+version = '0.1.0'
 
 
 def get_long_description():
