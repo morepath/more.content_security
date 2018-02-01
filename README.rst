@@ -11,14 +11,19 @@ To protect all views with a default content security policy:
 .. code-block:: python
 
     from morepath import App
-    from more.content_security import ContentSecurityApp, ContentSecurityPolicy
+    from more.content_security import ContentSecurityApp
+    from more.content_security import ContentSecurityPolicy
+    from more.content_security import SELF
 
     class MyApp(App, ContentSecurityApp):
         pass
 
     @MyApp.setting('content_security_policy', 'default')
     def default_policy():
-        return ContentSecurityPolicy()
+        return ContentSecurityPolicy(
+            default_src={SELF},
+            script_src={SELF, 'https://analytics.example.org'}
+        )
 
 To extend the default policy for the default view of a model:
 
@@ -68,6 +73,17 @@ you need to extend it as follows:
 
     class MyApp(App, ContentSecurityApp):
         request_class = CustomRequest
+
+To only use the 'ontent-Security-Policy-Report-Only' header, use this:
+
+.. code-block:: python
+
+    @MyApp.setting('content_security_policy', 'default')
+    def default_policy():
+        return ContentSecurityPolicy(
+            report_only=True,
+            default_src={SELF}
+        )
 
 Run the Tests
 -------------

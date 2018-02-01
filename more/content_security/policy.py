@@ -134,7 +134,9 @@ class ContentSecurityPolicy(object):
     require_sri_for = SingleValueDirective('require-sri-for')
     upgrade_insecure_requeists = BooleanDirective('upgrade-insecure-requests')
 
-    def __init__(self, **directives):
+    def __init__(self, report_only=False, **directives):
+        self.report_only = report_only
+
         for directive in directives:
             name = directive.replace('-', '_')
 
@@ -159,8 +161,15 @@ class ContentSecurityPolicy(object):
 
         return ';'.join(' '.join(v).strip() for v in values)
 
+    @property
+    def header_name(self):
+        if self.report_only:
+            return 'Content-Security-Policy-Report-Only'
+        else:
+            return 'Content-Security-Policy'
+
     def apply(self, response):
         text = self.text
 
         if text:
-            response.headers['Content-Security-Policy'] = text
+            response.headers[self.header_name] = text

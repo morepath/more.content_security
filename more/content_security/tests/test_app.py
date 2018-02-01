@@ -105,3 +105,28 @@ def test_content_security_nonce():
 
     assert nonce not in text
     assert nonce != re.search(r'nonce-([^\']+)', text).group(1)
+
+
+def test_content_security_report_only():
+    class App(ContentSecurityApp):
+        pass
+
+    @App.path(path='/')
+    class Model(object):
+        pass
+
+    @App.view(model=Model)
+    def default(self, request):
+        return "view"
+
+    @App.setting('content_security_policy', 'default')
+    def default_policy():
+        return ContentSecurityPolicy(report_only=True, default_src={SELF})
+
+    client = Client(App())
+
+    response = client.get('/')
+    assert 'Content-Security-Policy' not in response.headers
+    assert response.headers['Content-Security-Policy-Report-Only'] == (
+        "default-src 'self'"
+    )
