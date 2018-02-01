@@ -24,29 +24,21 @@ To extend the default policy for the default view of a model:
 
 .. code-block:: python
 
-    @MyApp.content_security_policy(model=Document)
-    def document_policy(self, request, default):
+    @MyApp.view(model=Document)
+    def view_document(self, request):
 
         # the actual default policy is not modified here!
-        default.script_src.add('https://cdnjs.com')
+        request.content_security_policy.script_src.add('https://cdnjs.com')
 
-        return default
+        ....
 
 We can also use a completely different policy:
 
 .. code-block:: python
 
-    @MyApp.content_security_policy(model=Document)
-    def document_policy(self, request):
-        return ContentSecurityPolicy()
-
-To override the policy for a specific view:
-
-.. code-block:: python
-
-    @MyApp.content_security_policy(model=Document, name='edit')
-    def document_edit_policy(self, request):
-        return ContentSecurityPolicy()
+    @MyApp.view(model=Document)
+    def view_document(self, request):
+        request.content_security_policy = ContentSecurityPolicy()
 
 Additionally, we can use nonces in inline scripty/stylesheets. Those will
 automatically be added to the 'script-src', 'style-src' directives:
@@ -61,7 +53,7 @@ automatically be added to the 'script-src', 'style-src' directives:
 
                 <script nonce="{}">...</script>
             </html>
-        """.format(request.content_security.script_nonce())
+        """.format(request.content_security_policy.script_nonce())
 
 Note that we use a custom request class for nonces. If you have your own,
 you need to extend it as follows:
