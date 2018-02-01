@@ -40,6 +40,7 @@ setup(
         test=[
             'coverage',
             'pytest',
+            'webtest',
         ],
     ),
     classifiers=[

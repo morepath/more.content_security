@@ -53,7 +53,7 @@ automatically be added to the 'script-src', 'style-src' directives:
 
                 <script nonce="{}">...</script>
             </html>
-        """.format(request.content_security_policy.script_nonce())
+        """.format(request.content_security_policy_nonce('script'))
 
 Note that we use a custom request class for nonces. If you have your own,
 you need to extend it as follows:

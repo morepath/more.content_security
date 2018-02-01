@@ -2,6 +2,11 @@ import inspect
 
 from copy import deepcopy
 
+SELF = "'self'"
+UNSAFE_INLINE = "'unsafe-inline'"
+NONE = "'none'"
+STRICT_DYNAMIC = "'strict-dynamic'"
+
 
 class Directive(object):
     """ Descriptor for the management and rendering of CSP directives.
@@ -153,3 +158,9 @@ class ContentSecurityPolicy(object):
         values = ((name, text) for name, text in values if text is not None)
 
         return ';'.join(' '.join(v).strip() for v in values)
+
+    def apply(self, response):
+        text = self.text
+
+        if text:
+            response.headers['Content-Security-Policy'] = text
