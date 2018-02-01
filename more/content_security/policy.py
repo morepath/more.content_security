@@ -47,17 +47,20 @@ class Directive(object):
 
 class SetDirective(Directive):
     def __init__(self, name):
-        super().__init__(name, type=set, default=set, render=render_set)
+        parent = super(SetDirective, self)
+        parent.__init__(name, type=set, default=set, render=render_set)
 
 
 class SingleValueDirective(Directive):
     def __init__(self, name):
-        super().__init__(name, type=str, default=str, render=str)
+        parent = super(SingleValueDirective, self)
+        parent.__init__(name, type=str, default=str, render=str)
 
 
 class BooleanDirective(Directive):
     def __init__(self, name):
-        super().__init__(name, type=bool, default=bool, render=render_bool)
+        parent = super(BooleanDirective, self)
+        parent.__init__(name, type=bool, default=bool, render=render_bool)
 
 
 def is_directive(obj):
