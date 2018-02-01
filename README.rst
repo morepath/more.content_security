@@ -74,7 +74,7 @@ you need to extend it as follows:
     class MyApp(App, ContentSecurityApp):
         request_class = CustomRequest
 
-To only use the 'ontent-Security-Policy-Report-Only' header, use this:
+To only use the 'Content-Security-Policy-Report-Only' header, use this:
 
 .. code-block:: python
 
