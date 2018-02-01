@@ -6,7 +6,9 @@ Content Security Policy for Morepath
 Usage
 -----
 
-To protect all views with a default content security policy::
+To protect all views with a default content security policy:
+
+.. code-block:: python
 
     from morepath import App
     from more.content_security import ContentSecurityApp, ContentSecurityPolicy
@@ -18,7 +20,9 @@ To protect all views with a default content security policy::
     def default_policy():
         return ContentSecurityPolicy()
 
-To extend the default policy for the default view of a model::
+To extend the default policy for the default view of a model:
+
+.. code-block:: python
 
     @MyApp.content_security_policy(model=Document)
     def document_policy(self, request, default):
@@ -28,20 +32,26 @@ To extend the default policy for the default view of a model::
 
         return default
 
-We can also use a completely different policy::
+We can also use a completely different policy:
+
+.. code-block:: python
 
     @MyApp.content_security_policy(model=Document)
     def document_policy(self, request):
         return ContentSecurityPolicy()
 
-To override the policy for a specific view::
+To override the policy for a specific view:
+
+.. code-block:: python
 
     @MyApp.content_security_policy(model=Document, name='edit')
     def document_edit_policy(self, request):
         return ContentSecurityPolicy()
 
 Additionally, we can use nonces in inline scripty/stylesheets. Those will
-automatically be added to the 'script-src', 'style-src' directives::
+automatically be added to the 'script-src', 'style-src' directives:
+
+.. code-block:: python
 
     @MyApp.html(model=Document)
     def view_document(self, request):
@@ -55,6 +65,8 @@ automatically be added to the 'script-src', 'style-src' directives::
 
 Note that we use a custom request class for nonces. If you have your own,
 you need to extend it as follows:
+
+.. code-block:: python
 
     from morepath.request import Request
     from more.content_security import ContentSecurityRequest
