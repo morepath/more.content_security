@@ -4,6 +4,7 @@ from copy import deepcopy
 
 SELF = "'self'"
 UNSAFE_INLINE = "'unsafe-inline'"
+UNSAFE_EVAL = "'unsafe-eval'"
 NONE = "'none'"
 STRICT_DYNAMIC = "'strict-dynamic'"
 
