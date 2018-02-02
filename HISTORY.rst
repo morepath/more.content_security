@@ -1,6 +1,9 @@
 Changelog
 ---------
 
+- Adds the ability to override the policy apply function.
+  [href]
+
 - Adds missing UNSAFE_EVAL constant.
   [href]
 

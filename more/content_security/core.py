@@ -82,8 +82,18 @@ def default_policy():
     return ContentSecurityPolicy()
 
 
+@ContentSecurityApp.setting('content_security_policy', 'apply_policy')
+def default_policy_apply_factory():
+
+    def apply_policy(policy, request, response):
+        policy.apply(response)
+
+    return apply_policy
+
+
 @ContentSecurityApp.tween_factory()
 def content_security_policy_tween_factory(app, handler):
+    policy_settings = app.settings.content_security_policy
 
     def content_security_policy_tween(request):
         response = handler(request)
@@ -93,9 +103,9 @@ def content_security_policy_tween_factory(app, handler):
             policy = request._content_security_policy
         else:
             # the default policy is used
-            policy = request.app.settings.content_security_policy.default
+            policy = policy_settings.default
 
-        policy.apply(response)
+        policy_settings.apply_policy(policy, request, response)
 
         return response
 
