@@ -1,6 +1,12 @@
 Changelog
 ---------
 
+unreleased
+~~~~~~~~~~
+
+- Update supported Python versions.
+  [jugmac00]
+
 0.2.0 (2018-02-02)
 ~~~~~~~~~~~~~~~~~~~~~
 
