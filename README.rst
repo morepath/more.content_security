@@ -109,8 +109,8 @@ more.content_security uses `Semantic Versioning <http://semver.org/>`_
 Build Status
 ------------
 
-.. image:: https://travis-ci.org/morepath/more.content_security.png
-  :target: https://travis-ci.org/morepath/more.content_security
+.. image:: https://travis-ci.com/morepath/more.content_security.png
+  :target: https://travis-ci.com/morepath/more.content_security
   :alt: Build Status
 
 Coverage
