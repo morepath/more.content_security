@@ -8,12 +8,12 @@ from more.content_security.core import ContentSecurityApp
 from more.content_security.core import ContentSecurityRequest
 
 __all__ = (
-    'ContentSecurityApp',
-    'ContentSecurityPolicy',
-    'ContentSecurityRequest',
-    'NONE',
-    'SELF',
-    'STRICT_DYNAMIC',
-    'UNSAFE_INLINE',
-    'UNSAFE_EVAL',
+    "ContentSecurityApp",
+    "ContentSecurityPolicy",
+    "ContentSecurityRequest",
+    "NONE",
+    "SELF",
+    "STRICT_DYNAMIC",
+    "UNSAFE_INLINE",
+    "UNSAFE_EVAL",
 )

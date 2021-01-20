@@ -7,6 +7,9 @@ unreleased
 - Update supported Python versions.
   [jugmac00]
 
+- Use GitHub Actions for CI.
+  [jugmac00
+
 0.2.0 (2018-02-02)
 ~~~~~~~~~~~~~~~~~~~~~
 
