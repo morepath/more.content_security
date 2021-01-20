@@ -7,7 +7,7 @@ def test_policy_initialisation():
     policy = ContentSecurityPolicy(default_src={"https://example.org"})
     assert policy.text == "default-src https://example.org"
 
-    policy = ContentSecurityPolicy(**{'default-src': {"https://example.org"}})
+    policy = ContentSecurityPolicy(**{"default-src": {"https://example.org"}})
     assert policy.text == "default-src https://example.org"
 
 

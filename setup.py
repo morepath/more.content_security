@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from setuptools import setup, find_packages
 
 name = "more.content_security"
@@ -12,7 +10,7 @@ def get_long_description():
     history = open("HISTORY.rst").read()
 
     # cut the part before the description to avoid repetition on pypi
-    readme = readme[readme.index(description) + len(description):]
+    readme = readme[readme.index(description) + len(description) :]
 
     return "\n".join((readme, history))
 
@@ -44,6 +42,7 @@ setup(
         "Programming Language :: Python",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: Implementation :: CPython",
         "Topic :: Software Development :: Libraries :: Python Modules",

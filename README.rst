@@ -1,3 +1,18 @@
+.. image:: https://github.com/morepath/more.content_security/workflows/CI/badge.svg?branch=master
+   :target: https://github.com/morepath/more.content_security/actions?workflow=CI
+   :alt: CI Status
+
+.. image:: https://coveralls.io/repos/github/morepath/more.content_security/badge.svg?branch=master
+    :target: https://coveralls.io/github/morepath/more.content_security?branch=master
+
+.. image:: https://img.shields.io/pypi/v/more.content_security.svg
+  :target: https://pypi.org/project/more.content_security/
+
+.. image:: https://img.shields.io/pypi/pyversions/more.content_security.svg
+  :target: https://pypi.org/project/more.content_security/
+
+
+
 more.content_security
 =====================
 
@@ -105,27 +120,6 @@ more.content_security follows PEP8 as close as possible. To test for it run::
     tox -e pep8
 
 more.content_security uses `Semantic Versioning <http://semver.org/>`_
-
-Build Status
-------------
-
-.. image:: https://travis-ci.com/morepath/more.content_security.png
-  :target: https://travis-ci.com/morepath/more.content_security
-  :alt: Build Status
-
-Coverage
---------
-
-.. image:: https://coveralls.io/repos/morepath/more.content_security/badge.png?branch=master
-  :target: https://coveralls.io/r/morepath/more.content_security?branch=master
-  :alt: Project Coverage
-
-Latest PyPI Release
--------------------
-
-.. image:: https://badge.fury.io/py/more.content_security.svg
-    :target: https://badge.fury.io/py/more.content_security
-    :alt: Latest PyPI Release
 
 License
 -------

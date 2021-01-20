@@ -10,14 +10,13 @@ NONCE_LENGTH = 16
 
 
 def random_nonce():
-    return base64.b64encode(os.urandom(NONCE_LENGTH)).decode('utf-8')
+    return base64.b64encode(os.urandom(NONCE_LENGTH)).decode("utf-8")
 
 
 class ContentSecurityRequest(Request):
-
     @property
     def content_security_policy(self):
-        """ Provides access to a request-local version of the content
+        """Provides access to a request-local version of the content
         security policy.
 
         This policy may be modified without having any effect on the default
@@ -25,9 +24,10 @@ class ContentSecurityRequest(Request):
 
         """
 
-        if not hasattr(self, '_content_security_policy'):
-            self._content_security_policy\
-                = self.app.settings.content_security_policy.default.copy()
+        if not hasattr(self, "_content_security_policy"):
+            self._content_security_policy = (
+                self.app.settings.content_security_policy.default.copy()
+            )
 
         return self._content_security_policy
 
@@ -36,7 +36,7 @@ class ContentSecurityRequest(Request):
         self._content_security_policy = policy
 
     def content_security_policy_nonce(self, target):
-        """ Generates a nonce that's random once per request, adds it to
+        """Generates a nonce that's random once per request, adds it to
         either 'style-src' or 'script-src' and returns its value.
 
         This can be used to whitelist inline scripts/styles with nonces.
@@ -46,19 +46,19 @@ class ContentSecurityRequest(Request):
 
         """
 
-        assert target in ('script', 'style')
+        assert target in ("script", "style")
 
         policy = self.content_security_policy
         nonce = self.content_security_policy_nonce_value
-        directive = '{}_src'.format(target)
+        directive = f"{target}_src"
 
-        getattr(policy, directive).add("'nonce-{}'".format(nonce))
+        getattr(policy, directive).add(f"'nonce-{nonce}'")
 
         return nonce
 
     @property
     def content_security_policy_nonce_value(self):
-        """ Returns the request-bound content security nonce. It is secure
+        """Returns the request-bound content security nonce. It is secure
         to keep this once per request. It is only dangerous to use nonces
         over more than one request.
 
@@ -67,7 +67,7 @@ class ContentSecurityRequest(Request):
 
         """
 
-        if not hasattr(self, '_nonce_value'):
+        if not hasattr(self, "_nonce_value"):
             self._nonce_value = random_nonce()
 
         return self._nonce_value
@@ -77,14 +77,13 @@ class ContentSecurityApp(App):
     request_class = ContentSecurityRequest
 
 
-@ContentSecurityApp.setting('content_security_policy', 'default')
+@ContentSecurityApp.setting("content_security_policy", "default")
 def default_policy():
     return ContentSecurityPolicy()
 
 
-@ContentSecurityApp.setting('content_security_policy', 'apply_policy')
+@ContentSecurityApp.setting("content_security_policy", "apply_policy")
 def default_policy_apply_factory():
-
     def apply_policy(policy, request, response):
         policy.apply(response)
 
@@ -98,7 +97,7 @@ def content_security_policy_tween_factory(app, handler):
     def content_security_policy_tween(request):
         response = handler(request)
 
-        if hasattr(request, '_content_security_policy'):
+        if hasattr(request, "_content_security_policy"):
             # a custom security policy is used
             policy = request._content_security_policy
         else:
