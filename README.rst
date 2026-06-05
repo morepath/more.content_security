@@ -14,7 +14,7 @@
 
 
 more.content_security
-=====================
+*********************
 
 Content Security Policy for Morepath
 

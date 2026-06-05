@@ -5,10 +5,13 @@ unreleased
 ~~~~~~~~~~
 
 - Update supported Python versions.
-  [jugmac00]
+  [jugmac00] & [Daverball]
 
 - Use GitHub Actions for CI.
-  [jugmac00
+  [jugmac00]
+
+- Switch to PEP-420 namespace package
+  [Daverball]
 
 0.2.0 (2018-02-02)
 ~~~~~~~~~~~~~~~~~~~~~
