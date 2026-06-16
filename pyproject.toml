@@ -23,6 +23,7 @@ classifiers = [
     "Programming Language :: Python :: Implementation :: PyPy",
 ]
 requires-python = ">= 3.10"
+# TODO: pin to morepath >= 1
 dependencies = ["morepath"]
 
 [project.urls]
@@ -34,9 +35,14 @@ Changelog = "https://github.com/morepath/more.content_security/blob/master/HISTO
 test = ["pytest >= 8", "pytest-env", "WebTest"]
 coverage = ["pytest-cov"]
 lint = ["black", "flake8", "flake8-pyproject"]
+mypy = ["mypy", "pytest", "types-WebOb", "types-WebTest"]
+pyright = ["pyright", "pytest", "types-WebOb", "types-WebTest", "WebTest"]
 
 [tool.setuptools.packages]
 find = {}
+
+[tool.setuptools.package-data]
+"more.content_security" = ["py.typed"]
 
 [tool.setuptools.dynamic]
 readme = {file = ["README.rst", "HISTORY.rst"]}
@@ -56,8 +62,13 @@ show_missing = true
 
 [tool.flake8]
 show-source = true
-ignore = ["E203", "E231", "W503"]
+ignore = ["E203", "E231", "E301", "E704", "W503"]
 max-line-length = 88
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+warn_unreachable = true
 
 [tool.bumpversion]
 current_version = "0.2.0"
@@ -81,10 +92,10 @@ unreleased
 ~~~~~~~~~~)?
 """
 replace = """
----------
+---------(?:
 
-{new_version} ({now:%d.%m.%Y})
-~~~~~~~~~~~~~~~~~~~
+(?:unreleased|[0-9]+\\.[0-9]+\\.[0-9]+(:?\\.[a-z]+[0-9]*)? \\(unreleased\\))
+~+)
 """
 
 [tool.tox]
@@ -98,12 +109,14 @@ env_list = [
     "pypy3",
     "coverage",
     "pre-commit",
+    "mypy",
+    "pyright",
 ]
 skip_missing_interpreters = true
 
 [tool.tox.gh.python]
 "3.10" = ["py310"]
-"3.11" = ["py311"]
+"3.11" = ["py311", "mypy", "pyright"]
 "3.12" = ["py312"]
 "3.13" = ["py313"]
 "3.14" = ["py314", "pre-commit", "coverage"]
@@ -112,6 +125,7 @@ skip_missing_interpreters = true
 [tool.tox.env_run_base]
 package = "editable"
 extras = ["test"]
+deps = ["-r{tox_root}/requirements/corelibs.txt"]
 commands = [["pytest", "{posargs:more}"]]
 
 [tool.tox.env.coverage]
@@ -127,4 +141,26 @@ package = "skip"
 deps = ["pre-commit"]
 commands = [
     ["pre-commit", "run", "--all-files"],
+]
+
+[tool.tox.env.mypy]
+base_python = ["python3"]
+extras = ["mypy"]
+commands = [
+    ["mypy", "-p", "more.content_security", "--python-version", "3.10"],
+    ["mypy", "-p", "more.content_security", "--python-version", "3.11"],
+    ["mypy", "-p", "more.content_security", "--python-version", "3.12"],
+    ["mypy", "-p", "more.content_security", "--python-version", "3.13"],
+    ["mypy", "-p", "more.content_security", "--python-version", "3.14"],
+]
+
+[tool.tox.env.pyright]
+base_python = ["python3"]
+extras = ["pyright"]
+commands = [
+    ["pyright", "more/content_security", "--pythonversion", "3.10"],
+    ["pyright", "more/content_security", "--pythonversion", "3.11"],
+    ["pyright", "more/content_security", "--pythonversion", "3.12"],
+    ["pyright", "more/content_security", "--pythonversion", "3.13"],
+    ["pyright", "more/content_security", "--pythonversion", "3.14"],
 ]

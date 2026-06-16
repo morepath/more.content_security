@@ -10,7 +10,10 @@ unreleased
 - Use GitHub Actions for CI.
   [jugmac00]
 
-- Switch to PEP-420 namespace package
+- Switch to PEP-420 namespace package.
+  [Daverball]
+
+- Add type hints.
   [Daverball]
 
 0.2.0 (2018-02-02)
