@@ -1,21 +1,43 @@
+from __future__ import annotations
+
 import base64
 import os
+from typing import TYPE_CHECKING, Literal
 
 from morepath import App
 from morepath.request import Request
 from more.content_security.policy import ContentSecurityPolicy
 
+if TYPE_CHECKING:
+    from collections.abc import Callable
+    from typing_extensions import TypeVar
+
+    from webob import Response as BaseResponse
+
+    from morepath.types import Tween
+
+    _AppT = TypeVar(
+        "_AppT",
+        bound="ContentSecurityApp",
+        default="ContentSecurityApp",
+        covariant=True,
+    )
+else:
+    from typing import TypeVar
+
+    _AppT = TypeVar("_AppT", bound="ContentSecurityApp", covariant=True)
+
 # see https://csp.withgoogle.com/docs/faq.html#generating-nonces
 NONCE_LENGTH = 16
 
 
-def random_nonce():
+def random_nonce() -> str:
     return base64.b64encode(os.urandom(NONCE_LENGTH)).decode("utf-8")
 
 
-class ContentSecurityRequest(Request):
+class ContentSecurityRequest(Request[_AppT]):
     @property
-    def content_security_policy(self):
+    def content_security_policy(self) -> ContentSecurityPolicy:
         """Provides access to a request-local version of the content
         security policy.
 
@@ -29,13 +51,13 @@ class ContentSecurityRequest(Request):
                 self.app.settings.content_security_policy.default.copy()
             )
 
-        return self._content_security_policy
+        return self._content_security_policy  # type: ignore[no-any-return]
 
     @content_security_policy.setter
-    def content_security_policy(self, policy):
+    def content_security_policy(self, policy: ContentSecurityPolicy) -> None:
         self._content_security_policy = policy
 
-    def content_security_policy_nonce(self, target):
+    def content_security_policy_nonce(self, target: Literal["script", "style"]) -> str:
         """Generates a nonce that's random once per request, adds it to
         either 'style-src' or 'script-src' and returns its value.
 
@@ -57,7 +79,7 @@ class ContentSecurityRequest(Request):
         return nonce
 
     @property
-    def content_security_policy_nonce_value(self):
+    def content_security_policy_nonce_value(self) -> str:
         """Returns the request-bound content security nonce. It is secure
         to keep this once per request. It is only dangerous to use nonces
         over more than one request.
@@ -78,23 +100,29 @@ class ContentSecurityApp(App):
 
 
 @ContentSecurityApp.setting("content_security_policy", "default")
-def default_policy():
+def default_policy() -> ContentSecurityPolicy:
     return ContentSecurityPolicy()
 
 
 @ContentSecurityApp.setting("content_security_policy", "apply_policy")
-def default_policy_apply_factory():
-    def apply_policy(policy, request, response):
+def default_policy_apply_factory() -> (
+    Callable[[ContentSecurityPolicy, Request, BaseResponse], None]
+):
+    def apply_policy(
+        policy: ContentSecurityPolicy, request: Request, response: BaseResponse
+    ) -> None:
         policy.apply(response)
 
     return apply_policy
 
 
 @ContentSecurityApp.tween_factory()
-def content_security_policy_tween_factory(app, handler):
+def content_security_policy_tween_factory(
+    app: ContentSecurityApp, handler: Tween
+) -> Tween:
     policy_settings = app.settings.content_security_policy
 
-    def content_security_policy_tween(request):
+    def content_security_policy_tween(request: ContentSecurityRequest) -> BaseResponse:
         response = handler(request)
 
         if hasattr(request, "_content_security_policy"):

@@ -1,17 +1,21 @@
+from __future__ import annotations
+
 import pytest
 
 from more.content_security import ContentSecurityPolicy
 
 
-def test_policy_initialisation():
+def test_policy_initialisation() -> None:
     policy = ContentSecurityPolicy(default_src={"https://example.org"})
     assert policy.text == "default-src https://example.org"
 
-    policy = ContentSecurityPolicy(**{"default-src": {"https://example.org"}})
+    policy = ContentSecurityPolicy(
+        report_only=False, **{"default-src": {"https://example.org"}}
+    )
     assert policy.text == "default-src https://example.org"
 
 
-def test_multivalue_directive():
+def test_multivalue_directive() -> None:
     policy = ContentSecurityPolicy()
     assert policy.text == ""
 
@@ -28,10 +32,10 @@ def test_multivalue_directive():
     assert policy.text == ""
 
     with pytest.raises(TypeError):
-        policy.default_src = []
+        policy.default_src = []  # type: ignore
 
 
-def test_singevalue_directive():
+def test_singevalue_directive() -> None:
     policy = ContentSecurityPolicy()
 
     policy.sandbox = "allow-forms"
@@ -41,10 +45,10 @@ def test_singevalue_directive():
     assert policy.text == ""
 
     with pytest.raises(TypeError):
-        policy.sandbox = None
+        policy.sandbox = None  # type: ignore
 
 
-def test_boolean_directive():
+def test_boolean_directive() -> None:
     policy = ContentSecurityPolicy()
 
     policy.block_all_mixed_content = True
@@ -54,10 +58,10 @@ def test_boolean_directive():
     assert policy.text == ""
 
     with pytest.raises(TypeError):
-        policy.block_all_mixed_content = None
+        policy.block_all_mixed_content = None  # type: ignore
 
 
-def test_multiple_directives():
+def test_multiple_directives() -> None:
     policy = ContentSecurityPolicy()
 
     policy.default_src.add("https://example.org")
@@ -72,7 +76,7 @@ def test_multiple_directives():
     )
 
 
-def test_copy_directive():
+def test_copy_directive() -> None:
     policy = ContentSecurityPolicy()
     assert policy.text == ""
 
